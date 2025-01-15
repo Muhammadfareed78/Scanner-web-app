@@ -37,21 +37,30 @@ const CardScanner = () => {
     }
   };
 
-  const openCamera = async () => {
-    if (navigator.mediaDevices.getUserMedia) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        setCameraStream(stream);
-        videoRef.current.srcObject = stream;
-        setIsCameraActive(true);
-      } catch (error) {
-        console.error('Error accessing camera: ', error);
-        message.error('Unable to access the camera. Please check permissions.');
-      }
+  const openCamera = () => {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          setCameraStream(stream);
+          videoRef.current.srcObject = stream;
+          setIsCameraActive(true);
+        })
+        .catch((error) => {
+          console.error('Error accessing camera: ', error);
+          if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+            message.error('Camera access denied. Please check your browser permissions.');
+          } else if (error.name === 'NotFoundError') {
+            message.error('No camera found. Please ensure your device has a camera.');
+          } else {
+            message.error('Unable to access the camera. Please check permissions.');
+          }
+        });
     } else {
       message.error('Camera functionality is not supported on this device.');
     }
   };
+  
 
   const stopCamera = () => {
     if (cameraStream) {
