@@ -37,19 +37,17 @@ const CardScanner = () => {
     }
   };
 
-  const openCamera = () => {
+  const openCamera = async () => {
     if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then((stream) => {
-          setCameraStream(stream);
-          videoRef.current.srcObject = stream;
-          setIsCameraActive(true);
-        })
-        .catch((error) => {
-          console.error('Error accessing camera: ', error);
-          message.error('Unable to access the camera.');
-        });
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        setCameraStream(stream);
+        videoRef.current.srcObject = stream;
+        setIsCameraActive(true);
+      } catch (error) {
+        console.error('Error accessing camera: ', error);
+        message.error('Unable to access the camera. Please check permissions.');
+      }
     } else {
       message.error('Camera functionality is not supported on this device.');
     }
@@ -58,7 +56,7 @@ const CardScanner = () => {
   const stopCamera = () => {
     if (cameraStream) {
       const tracks = cameraStream.getTracks();
-      tracks.forEach(track => track.stop());
+      tracks.forEach((track) => track.stop());
       setCameraStream(null);
     }
     setIsCameraActive(false);
@@ -287,7 +285,7 @@ const CardScanner = () => {
                           <a href={`tel:${phone}`} style={{ textDecoration: 'underline', color: 'blue' }}>
                             {phone}
                           </a>
-                          {index < scannedData.phones.length - 1 ? ', ' : ''}
+                          {index < scannedData.phones.length - 1 ? ', ' : ''} 
                         </span>
                       ))
                     : 'N/A'}
