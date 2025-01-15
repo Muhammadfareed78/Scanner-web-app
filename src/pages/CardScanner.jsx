@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useRef, useEffect } from 'react';
+=======
+import React, { useState, useRef } from 'react';
+>>>>>>> 194e96123dfadf751e807f9ea40551886994e23f
 import { Button, Card, message, Spin } from 'antd';
 import {
   CameraOutlined,
@@ -17,11 +21,16 @@ const CardScanner = () => {
   const [image, setImage] = useState(null);
   const [scannedData, setScannedData] = useState({});
   const [loading, setLoading] = useState(false);
+<<<<<<< HEAD
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [cameraStream, setCameraStream] = useState(null);
 
   const fileInputRef = useRef();
   const videoRef = useRef();
+=======
+
+  const fileInputRef = useRef();
+>>>>>>> 194e96123dfadf751e807f9ea40551886994e23f
 
   const isMobileDevice = () => {
     const md = new MobileDetect(window.navigator.userAgent);
@@ -30,12 +39,17 @@ const CardScanner = () => {
 
   const startScanner = () => {
     if (isMobileDevice()) {
+<<<<<<< HEAD
       openCamera();
+=======
+      message.info('Camera functionality is enabled on mobile devices.');
+>>>>>>> 194e96123dfadf751e807f9ea40551886994e23f
     } else {
       fileInputRef.current.click();
     }
   };
 
+<<<<<<< HEAD
   const openCamera = () => {
     if (navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
@@ -75,6 +89,8 @@ const CardScanner = () => {
     stopCamera();
   };
 
+=======
+>>>>>>> 194e96123dfadf751e807f9ea40551886994e23f
   const handleImageUpload = (file) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -104,6 +120,10 @@ const CardScanner = () => {
   const extractCardData = (text) => {
     const fullText = text;
   
+<<<<<<< HEAD
+=======
+    // Refined regex patterns
+>>>>>>> 194e96123dfadf751e807f9ea40551886994e23f
     const email = text.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i)?.[0] || 'N/A';
     const phones = text.match(/(?:\+?\d{1,3})?[-.\s]?\(?\d{2,4}\)?[-.\s]?\d{3}[-.\s]?\d{3,4}/g) || [];
     const website = text.match(/\b(?:http[s]?:\/\/)?(?:www\.)?[a-zA-Z0-9.-]+\.[a-z]{2,}\b/i)?.[0] || 'N/A';
@@ -114,10 +134,21 @@ const CardScanner = () => {
       /\b[A-Z][a-zA-Z]+(?:\s[A-Z][a-zA-Z]+)*\s(?:Inc|Ltd|LLC|Solutions|Technologies|Corp|Enterprises|Group|Co)\b/i
     )?.[0] || 'N/A';
   
+<<<<<<< HEAD
+=======
+    // Updated address regex to handle a broader range of formats
+>>>>>>> 194e96123dfadf751e807f9ea40551886994e23f
     const address = text.match(
       /\d+\s[\w\s.,]+(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Lane|Ln|Drive|Dr|Court|Ct|Square|Sq|Plaza|Plz|Way|Terrace|Ter|Circle|Cir)\b.*?(?=\n|$)/i
     )?.[0] || 'N/A';
   
+<<<<<<< HEAD
+=======
+    if (name === 'N/A' || company === 'N/A' || address === 'N/A') {
+      console.warn('Some fields could not be extracted accurately. Check the regex or the input text format.');
+    }
+  
+>>>>>>> 194e96123dfadf751e807f9ea40551886994e23f
     setScannedData({ fullText, email, phones, website, name, company, address });
   
     if (fullText.trim() === '') {
@@ -126,6 +157,7 @@ const CardScanner = () => {
       message.success('Card scanned successfully!');
     }
   };
+<<<<<<< HEAD
 
   useEffect(() => {
     // Cleanup camera when component unmounts
@@ -133,6 +165,10 @@ const CardScanner = () => {
       stopCamera();
     };
   }, []);
+=======
+  
+  
+>>>>>>> 194e96123dfadf751e807f9ea40551886994e23f
 
   return (
     <div style={{ background: '#f4f6f8', minHeight: '100vh', padding: '10px' }}>
@@ -171,6 +207,7 @@ const CardScanner = () => {
                 borderRadius: '10px',
               }}
             />
+<<<<<<< HEAD
           ) : isCameraActive ? (
             <video
               ref={videoRef}
@@ -182,6 +219,8 @@ const CardScanner = () => {
                 backgroundColor: '#000',
               }}
             />
+=======
+>>>>>>> 194e96123dfadf751e807f9ea40551886994e23f
           ) : (
             <p style={{ textAlign: 'center', color: '#888', fontSize: '16px' }}>
               Upload a business card image to scan.
@@ -207,6 +246,7 @@ const CardScanner = () => {
             onChange={(e) => handleImageUpload(e.target.files[0])}
           />
         </div>
+<<<<<<< HEAD
 
         {isCameraActive && (
           <div style={{ textAlign: 'center', marginTop: '20px' }}>
@@ -219,6 +259,8 @@ const CardScanner = () => {
             </Button>
           </div>
         )}
+=======
+>>>>>>> 194e96123dfadf751e807f9ea40551886994e23f
       </Card>
 
       <Card
@@ -240,7 +282,11 @@ const CardScanner = () => {
             <p style={{ marginTop: '10px', fontSize: '16px', color: '#888' }}>Processing...</p>
           </div>
         ) : (
+<<<<<<< HEAD
           <div style={{ padding: '20px', width: '350px' }}>
+=======
+          <div style={{ padding: '20px' , width: '350px'}}>
+>>>>>>> 194e96123dfadf751e807f9ea40551886994e23f
             {Object.keys(scannedData).length > 0 && (
               <>
                 <p>
