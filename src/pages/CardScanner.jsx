@@ -38,28 +38,36 @@ const CardScanner = () => {
   };
 
   const openCamera = () => {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then((stream) => {
-          setCameraStream(stream);
-          videoRef.current.srcObject = stream;
-          setIsCameraActive(true);
+    if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+      navigator.mediaDevices.enumerateDevices()
+        .then(devices => {
+          const videoDevices = devices.filter(device => device.kind === 'videoinput');
+          if (videoDevices.length > 0) {
+            // Try to access the first available camera
+            navigator.mediaDevices
+              .getUserMedia({ video: { deviceId: videoDevices[0].deviceId } })
+              .then((stream) => {
+                setCameraStream(stream);
+                videoRef.current.srcObject = stream;
+                setIsCameraActive(true);
+              })
+              .catch((error) => {
+                console.error('Error accessing camera: ', error);
+                message.error('Unable to access the camera. Please check permissions.');
+              });
+          } else {
+            message.error('No camera found. Please ensure your device has a camera.');
+          }
         })
         .catch((error) => {
-          console.error('Error accessing camera: ', error);
-          if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
-            message.error('Camera access denied. Please check your browser permissions.');
-          } else if (error.name === 'NotFoundError') {
-            message.error('No camera found. Please ensure your device has a camera.');
-          } else {
-            message.error('Unable to access the camera. Please check permissions.');
-          }
+          console.error('Error enumerating devices: ', error);
+          message.error('Unable to detect camera devices. Please check permissions.');
         });
     } else {
       message.error('Camera functionality is not supported on this device.');
     }
   };
+  
   
 
   const stopCamera = () => {
